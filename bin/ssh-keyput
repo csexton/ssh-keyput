@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby 
+
+# == Synopsis 
+#   SSH Key Put Utility
+#
+# == Usage 
+#   ssh-keyput [options]
+#
+#   For help see http://github.com/csexton/ssh-keyput
+
+require 'optparse'
+require "#{File.dirname(__FILE__)}/../lib/ssh_keyput"
+
+kp = SshKeyPut.new
+
+o = OptionParser.new do |opts|
+
+  opts.summary_width = 25
+
+  opts.banner = "ssh-keyput (#{kp.version})\n",
+                "  usage: ssh-keyput [options...] [user@]hostname\n"
+
+  opts.separator "Configuration:"
+
+  opts.on('-v', '--version') do 
+    puts "ssh-keyput version #{kp.version}\n\n"
+    exit
+  end
+  opts.on('-h', '--help', "Print this message") do
+    puts "#{opts}\n"
+    exit
+  end
+  opts.on('-G', '--generate', "Generate an rsa key by running 'ssh-keygen -t rsa'") do
+    system "ssh-keygen -t rsa"
+    exit
+  end
+  opts.on('-KFILE', '--key-file FILE', "Use a specific key file.  Default #{kp.key_file}") do |file|
+    kp.key_file = file
+  end
+
+end
+
+
+
+begin
+  o.parse!
+  kp.host = ARGV[0]
+  raise "Invalid Parameter" unless kp.host
+
+  kp.put_key
+rescue => detail
+  puts detail
+  puts "#{o}"
+  exit
+end
+
+
