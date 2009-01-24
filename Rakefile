@@ -12,6 +12,7 @@ begin
     s.homepage = "http://github.com/csexton/ssh-keyput"
     s.description = "TODO"
     s.authors = ["Christopher Sexton"]
+    s.executables = ["ssh-keyput"]
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
