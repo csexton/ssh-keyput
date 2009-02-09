@@ -30,8 +30,15 @@ o = OptionParser.new do |opts|
     puts "#{opts}\n"
     exit
   end
-  opts.on('-G', '--generate', "Generate an rsa key by running 'ssh-keygen -t rsa'") do
+  opts.on('-d', '--dsa', "Use the dsa cert instead of the rsa") do
+    kp.key_file = "#{ENV["HOME"]}/.ssh/id_dsa.pub"
+  end
+  opts.on('-G', '--generate-rsa', "Generate an rsa key by running 'ssh-keygen -t rsa'") do
     system "ssh-keygen -t rsa"
+    exit
+  end
+  opts.on('-D', '--generate-dsa', "Generate a dsa key by running 'ssh-keygen -t dsa'") do
+    system "ssh-keygen -t dsa"
     exit
   end
   opts.on('-KFILE', '--key-file FILE', "Use a specific key file.  Default #{kp.key_file}") do |file|
